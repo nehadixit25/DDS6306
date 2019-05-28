@@ -1,0 +1,128 @@
+---
+title: "HW3"
+author: "Neha Dixit"
+date: "5/25/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# Solution 2
+```{r Question2}
+
+# a.) Read the titanic.csv into df dataframe specifying header and column sep
+df <- read.csv("C:\\Users\\ndixit\\Documents\\DDS6306\\awesome-public-datasets\\Datasets\\titanic.csv\\titanic.csv", header=TRUE, sep=",")
+
+#b.) Count number of males in dataset
+male <- sum(df$Sex=='male')
+print(male)
+
+#Count number of males in dataset
+female <- sum(df$Sex=='female')
+print(female)
+
+#plot frequency distribution by Gender 
+barplot(table(df$Sex),xlab = "Gender",ylab="Count",main="Gender Distribution" )
+
+#c.) Output mean of Age, Fare, Survival
+
+# Create a subset dataframe with null Age values excluded
+df.Age <- subset(df, Age!='NA')
+#Convert the Age column value into dataframe and use apply function to calculate the mean Age
+AgeMean <- apply(as.data.frame(df.Age$Age),2,mean)
+print(AgeMean)
+
+#Convert the Fare column value into dataframe and use apply function to calculate the mean fare
+FareMean <- apply(as.data.frame(df$Fare),2,mean)
+print(FareMean)
+
+#Convert the Survived column value into dataframe and use apply function to calculate the mean Survival
+SurvivalMean <- apply(as.data.frame(df$Survived),2,mean)
+print(SurvivalMean)
+
+
+```
+# Solution 3
+```{r Question3}
+#a.) Creating function  SleepStats with a dataframe as Input and Output 
+SleepStats <- function(sleepdf){
+  
+# Calculate median age excluding Age=NA
+MedianAge <- median(sleepdf$Age,na.rm=TRUE)
+
+# Calculate Min and Max Sleep Duration
+MinSleepDuration <- min(sleepdf$Duration,na.rm=TRUE)
+MaxSleepDuration <- max(sleepdf$Duration,na.rm=TRUE)
+
+# Calculate Mean and SD RSES
+MeanRSES <- mean(sleepdf$RSES,na.rm=TRUE)
+SDRSES <- sd(sleepdf$RSES,na.rm=TRUE)
+
+#b.) Create Dataframe Object Report
+Report <- data.frame(MedianAge= c(MedianAge),MeanRSES=c(MeanRSES/5),SDRSES=c(SDRSES/5),RangeSleepDuration= c(MaxSleepDuration)-c(MinSleepDuration))
+
+#c.) Rename column names in dataframe
+colnames(Report) <- c("MedianAge", "SelfEsteem", "SE_SD","DurationRange")
+
+#d.) Round decimal to 2 places
+ReportRound  <- round(Report,2)
+
+return(ReportRound)
+}
+
+# Read sleep data into sleepdf dataframe
+sleepdf <- read.csv("C:\\Users\\ndixit\\Documents\\DDS6306\\awesome-public-datasets\\Datasets\\sleep_data_01.csv", header=TRUE, sep=",")
+
+#e.) call function SleepStats
+Report <- SleepStats(sleepdf)
+
+# print output
+print(Report)
+
+
+```
+# Solution 4
+```{r Question4}
+# Import package fivethirtyeight
+library(fivethirtyeight)
+
+# Assign data frame
+#df <- data.frame(college_recent_grads)
+#a.)
+
+df1 <- data(package = "fivethirtyeight")
+#b.)
+df2 <- get(df1$results[22,"Item"])
+
+#c.)
+C <- vignette("fivethirtyeight", package = "fivethirtyeight")
+
+#https://fivethirtyeight.com/features/how-the-raptors-pulled-off-a-26-3-run-and-sealed-their-first-trip-to-the-finals/
+
+#d.)
+#dimension and column names of fields in dataframe
+dim(df2)
+names(df2)
+
+```
+
+# Solution 5
+```{r Question5}
+#a.) Dataframe column names and count 
+names(df2)
+ncol(df2)
+
+
+#b.) Count major category
+library(plyr)
+
+major_count <- count(df2, "major_category")
+major_count
+
+
+
+```
+
+
+

@@ -1,0 +1,29 @@
+---
+title: "stackloss"
+author: "Neha Dixit"
+date: "5/16/2019"
+output: 
+  html_document:
+    keep_md: true
+---
+
+
+# Introduction
+
+*The summary output shows the Min, 1st Qu, Median, Mean, 3rd Qu, and Max for Air.Flow, Water.Temp, Acid.Conc, Stack.loss
+
+*The str output shows the stackflow dataframe has 21 observations of 4 variables
+
+```{r stackloss}
+summary(stackloss)
+str(stackloss)
+```
+
+# Including Plots
+
+*There is a positive correlation between Air.Flow and stack.loss as when the airflow increases the stackloss increases as well.
+
+```{r scatterplot, echo=FALSE}
+plot(stack.loss ~ Air.Flow, data = stackloss, xlab = "Air Flow", ylab = "Stack Loss", main = "Scatterplot of stack.loss vs. Air.Flow")
+```
+
