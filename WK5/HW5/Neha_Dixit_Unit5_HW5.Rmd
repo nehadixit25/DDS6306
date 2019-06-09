@@ -1,0 +1,82 @@
+---
+title: "HW5"
+author: "Neha Dixit"
+date: "6/9/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## HW5
+
+### Solution 1
+
+```{r}
+# 1a Read yob2016.txt file into a df
+df <- read.delim("C:\\Users\\ndixit\\Documents\\SMU\\Sem1\\Doing datascience\\WK5\\HW5\\yob2016.txt", header = FALSE , sep = ";")
+
+#Rename df columnnames
+names(df) <- c("First Name", "Gender", "Amount of Children")
+
+# 1b Diplay summary and structure of df
+summary(df)
+str(df)
+
+# 1c Display the name with 3 y's
+df[grep("y{3}$" , df$`First Name` ),1]
+
+# 1d Remove name from 1c and save it as y2016
+
+y2016 <- df[c(-212),] # to ask
+
+```
+
+### Solution 2
+
+```{r}
+# 2a  Import txt and load to y2015
+y2015 <- read.delim("C:\\Users\\ndixit\\Documents\\SMU\\Sem1\\Doing datascience\\WK5\\HW5\\yob2015.txt", header = FALSE , sep = ",")
+
+#Rename columnnames
+names(y2015) <- c("First Name", "Gender", "Total Children")
+
+#2b Display last 10 rows
+tail(y2015, n=10)
+#Observation- The last 10 names are all male names and total 5 children have them
+
+#2c Merge y2016, y2015
+final <- na.omit(merge(y2016, y2015, by = "First Name",all = TRUE))
+nrow(final)
+head(final)
+#library(dplyr)
+#final <- y2016 %>% inner_join( y2015, by = "First Name","Gender") # to ask 
+#head(final)
+
+```
+### Solution 3
+
+```{r}
+# 3a Create column total and add amounts from 2015, 2016
+
+final$Total <- final$`Amount of Children` + final$`Total Children` #ask how many people given popular name
+
+# 3b Sort data by total and display top 10
+
+attach(final)
+Sortfinal <- final[order(-Total),]
+Sortfinal[1:10,]
+
+# 3c top 10 popular girl names
+
+Girl <- final[which (Gender.x == 'F'),]
+attach(Girl)
+Sortgirl <- Girl[order(-Total),]
+Sortgirl[1:10,]
+
+# 3d Write data to csv
+write.csv(Sortgirl[1:10, c("First Name", "Total")],"C:\\Users\\ndixit\\Documents\\SMU\\Sem1\\Doing datascience\\WK5\\HW5\\3doutput.csv",row.names=FALSE)
+
+```
+
