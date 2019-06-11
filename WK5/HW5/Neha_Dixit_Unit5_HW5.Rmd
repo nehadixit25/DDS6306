@@ -29,7 +29,7 @@ df[grep("y{3}$" , df$`First Name` ),1]
 
 # 1d Remove name from 1c and save it as y2016
 
-y2016 <- df[c(-212),] # to ask
+y2016 <- df[c(-212),] 
 
 ```
 
@@ -79,4 +79,5 @@ Sortgirl[1:10,]
 write.csv(Sortgirl[1:10, c("First Name", "Total")],"C:\\Users\\ndixit\\Documents\\SMU\\Sem1\\Doing datascience\\WK5\\HW5\\3doutput.csv",row.names=FALSE)
 
 ```
-
+### Solution 4
+https://github.com/nehadixit25/DDS6306/tree/master/WK5/HW5
