@@ -1,0 +1,54 @@
+---
+title: "API"
+author: "Neha Dixit"
+date: "6/3/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+
+
+library("tuber")
+library("httpuv")
+
+#authorization ( TO reuse this code , generate the app_id and app_secret keys)
+app_id <- "9a0ag.apps.googleusercontent.com"
+app_secret<- "0yBFoSyOqtGu"
+yt_oauth(app_id,app_secret , token='')
+
+#Gets stats on a video and video details
+get_stats(video_id="v=qgWMfNSN9f4")
+get_video_details(video_id="v=qgWMfNSN9f4")
+
+#Get statistics of all the videos in a channel
+a <- list_channel_resources(filter = c(channel_id = "UCd6MoB9NC6uYN2grvUNT-Zg"), part="contentDetails")
+
+# Uploaded playlists:
+playlist_id <- a$items[[1]]$contentDetails$relatedPlaylists$uploads
+
+# Get videos on the playlist
+vids <- get_playlist_items(filter= c(playlist_id=playlist_id)) 
+
+# Video ids
+vid_ids <- as.vector(vids$contentDetails.videoId)
+
+# Function to scrape stats for all vids
+get_all_stats <- function(id) {
+  get_stats(id)
+} 
+
+# Get stats and convert results to data frame 
+res <- lapply(vid_ids, get_all_stats)
+res_df <- do.call(rbind, lapply(res, data.frame))
+
+
+head(res_df)
+
+
+
+```
+
