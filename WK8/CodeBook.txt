@@ -1,0 +1,60 @@
+CodeBook
+
+Description:
+The Beers dataset contains a list of 2410 US craft beers and Breweries dataset contains 558 US breweries. 
+
+Usage
+df
+
+Format
+
+Beers.csv:
+
+Name: Name of the beer.
+Beer_ID: Unique identifier of the beer.
+ABV: Alcohol by volume of the beer.
+IBU: International Bitterness Units of the beer.
+Brewery_ID: Brewery id associated with the beer.
+Style: Style of the beer.
+Ounces: Ounces of beer.
+
+Breweries.csv:
+
+Brew_ID: Unique identifier of the brewery.
+Name: Name of the brewery.
+City: City where the brewery is located.
+State: U.S. State where the brewery is located.
+
+The Beers.csv and Breweries.csv dataset are merged(joined on Brewery_id) into df dataframe.
+
+df 
+
+Name.x: Name of the beer(from Beers dataset).
+Beer_ID: Unique identifier of the beer.
+ABV: Alcohol by volume of the beer.
+IBU: International Bitterness Units of the beer.
+Brewery_ID: Brewery id associated with the beer.
+Style: Style of the beer.
+Ounces: Ounces of beer.
+Brew_ID: Unique identifier of the brewery.
+Name.y: Name of the brewery( from Breweries dataset).
+City: City where the brewery is located.
+State: U.S. State where the brewery is located.
+
+Example
+  Brew_ID                             Name.x               City          State                         Name.y    
+ Min.   :  1.0   Brewery Vivant            :  62   Grand Rapids:  66    CO    : 265   Nonstop Hef Hop       :  12  
+ 1st Qu.: 94.0   Oskar Blues Brewery       :  46   Portland    :  64    CA    : 183   Dale's Pale Ale       :   6  
+ Median :206.0   Sun King Brewing Company  :  38   Chicago     :  55    MI    : 162   Oktoberfest           :   6  
+ Mean   :232.7   Cigar City Brewing Company:  25   Indianapolis:  43    IN    : 139   Longboard Island Lager:   4  
+ 3rd Qu.:367.0   Sixpoint Craft Ales       :  24   San Diego   :  42    TX    : 130   1327 Pod's ESB        :   3  
+ Max.   :558.0   Hopworks Urban Brewery    :  23   Boulder     :  41    OR    : 125   Boston Lager          :   3  
+                 (Other)                   :2192   (Other)     :2099   (Other):1406   (Other)               :2376  
+    Beer_ID            ABV               IBU                                    Style          Ounces     
+ Min.   :   1.0   Min.   :0.00100   Min.   :  4.00   American IPA                  : 424   Min.   : 8.40  
+ 1st Qu.: 808.2   1st Qu.:0.05000   1st Qu.: 21.00   American Pale Ale (APA)       : 245   1st Qu.:12.00  
+ Median :1453.5   Median :0.05600   Median : 35.00   American Amber / Red Ale      : 133   Median :12.00  
+ Mean   :1431.1   Mean   :0.05977   Mean   : 42.71   American Blonde Ale           : 108   Mean   :13.59  
+ 3rd Qu.:2075.8   3rd Qu.:0.06700   3rd Qu.: 64.00   American Double / Imperial IPA: 105   3rd Qu.:16.00  
+ Max.   :2692.0   Max.   :0.12800   Max.   :138.00   American Pale Wheat Ale       :  97   Max.   :32.00  
+                  NA's   :62        NA's   :1005     (Other)                       :1298             

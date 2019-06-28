@@ -1,0 +1,127 @@
+---
+title: "Casestudy1"
+author: "Neha Dixit"
+date: "6/20/2019"
+output: html_document
+description: "ABI - Exploratory Data analysis"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## Introduction
+Anheuser-Busch is the leading American brewer holding a 47.6% share of U.S. beer sales to the retailers. The company brews the world’s largest selling beers- Budweiser and budlight and operates many breweries across the U.S.
+
+The U.S. commercial pricing and planning management team at Anheuser-Busch is responsible for tracking the financial performance of sales at retail locations. In order to drive revenues, they are looking to build a model to make recommendations for sales and distributions , such as which brand and how of the product should be sold where.
+
+In order to understand the data and draw insights, SMU consulting has been engaged to perform intial exploratory data analysis on Brewery and beer datasets. 
+
+##
+
+```{r EDA}
+########################################################################################################################
+
+## Import essential libraries
+
+library(ggplot2)
+library(dplyr)
+
+########################################################################################################################
+
+## Import source breweries and beer data sets
+
+fileLocation <- "https://raw.githubusercontent.com/BivinSadler/MSDS-6306-Doing-Data-Science/master/Unit%207/Breweries.csv"
+breweries <- read.csv(url(fileLocation))
+head(breweries)
+
+fileLocation <- "https://raw.githubusercontent.com/BivinSadler/MSDS-6306-Doing-Data-Science/master/Unit%207/Beers.csv"
+beers <- read.csv(url(fileLocation))
+head(beers)
+
+#################################################################################################################
+## Initial data analysis
+
+# count rows columns in both dataset
+nrow(breweries)
+ncol(breweries)
+nrow(beers)
+ncol(beers)
+
+# Merge beer and brewery dataset
+df <- as.data.frame(merge(breweries, beers, by.x = "Brew_ID",by.y= "Brewery_id"))
+head(df)
+
+# Look for outliers 
+ggplot(df,aes(x=" ", y=df$ABV))+geom_boxplot()+ggtitle("ABV Box plot")+ylab("ABV")
+ggplot(df,aes(x=" ", y=df$IBU))+geom_boxplot()+ggtitle("IBU Box plot")+ylab("IBU")
+
+# NA count
+na.count <-sapply(df, function(y) sum(length(which(is.na(y)))))
+na.count
+
+#################################################################################################################
+### Questions
+
+# Q1 How many breweries are present in each state?
+# As clearly shown below colorado leads with 47 breweries followed by california at 39 and rest others in deceding order of the brewery count 
+breweries %>% count(breweries$State) -> breweries.state
+
+# Rename dataframe column names and display results sorted desc( by Brewery count)
+names(breweries.state) <- c("State", "BreweriesCount")
+breweries.state[order(-breweries.state$BreweriesCount),]
+
+# Q2 Print the first 6 observations and the last six observations of merged beer and brewery data set 
+rbind(head(df),tail(df))
+
+# Q3 Report the number of NA's in each column
+# ABV has 62 and IBU has 1005 NA values
+na.count <-sapply(df, function(y) sum(length(which(is.na(y)))))
+na.count
+
+# Q4 Compute the median alcohol content and international bitterness unit for each state. Plot a bar chart to compare
+# Median ABV Content
+df %>% select (State, ABV) %>% group_by(State) %>%summarize(median.abv=round(median(ABV, na.rm=TRUE),4)) %>%   arrange(desc(median.abv)) -> abvsummary
+data.frame(abvsummary)
+
+# Median IBU Content
+df %>% select (State, IBU) %>% group_by(State) %>%summarize(median.ibu=round(median(IBU, na.rm=TRUE),4)) %>%   arrange(desc(median.ibu))  -> ibusummary
+data.frame(ibusummary)
+
+# Alcoholic beer by state
+ggplot(abvsummary, aes(reorder(State,median.abv), median.abv)) + geom_bar(aes(fill=State),stat="identity") +  coord_flip()+ggtitle("Median ABV by state") +
+  xlab(" State \n\n") + ylab("ABV Content")+coord_flip()
+
+# Bitter beers by state
+ggplot(ibusummary, aes(reorder(State,median.ibu), median.ibu)) + geom_bar(aes(fill=State),stat="identity") +  coord_flip()+ggtitle("Median IBU by state") +
+  xlab(" State \n\n") + ylab("IBU Content")+coord_flip()
+
+# Median ABV Content (top 10 states)
+df %>% select (State, ABV) %>% group_by(State) %>%summarize(median.abv=round(median(ABV, na.rm=TRUE),4)) %>%   arrange(desc(median.abv)) %>% slice(1:10)-> abvsummary
+data.frame(abvsummary)
+
+# Median IBU Content (top 10 states)
+df %>% select (State, IBU) %>% group_by(State) %>%summarize(median.ibu=round(median(IBU, na.rm=TRUE),4)) %>%   arrange(desc(median.ibu))  %>% slice(1:10)-> ibusummary
+data.frame(ibusummary)
+
+# Q5 Which state has the maximum alcoholic (ABV) beer? Which state has the most bitter (IBU) beer?
+# Colorado
+df[which.max(df$ABV),]
+
+# Q6 Summary statistics, histogram and QQplots for AVB and IBU
+summary(df$ABV)
+
+ggplot(df,aes(df$ABV))+geom_histogram(fill=("bisque1"),col="blue",breaks=seq(0, .1, by=.01))+xlab("ABV")
+ggplot(df,aes(sample=df$ABV))+stat_qq(color="blue")+xlab("ABV")
+
+ggplot(df,aes(df$IBU))+geom_histogram(fill=("bisque1"),col="blue",breaks=seq(0, 150, by=10))+xlab("IBU")
+ggplot(df,aes(sample=df$IBU))+stat_qq(color="blue")+xlab("IBU")
+
+# Q7 Is there an apparent relationship between the bitterness of the beer and its alcoholic content? Draw a scatter plot
+# There seems to be some sort of linear relationship ( as ABV increase IBU tends to increase) but since a lot of IBU values are NA it is hard to conclude
+plot(df$ABV, df$IBU,pch = 15, col = rainbow(7), main="ABV and IBU Relation", 
+  xlab="Alcoholic Beverage content", ylab="Bitterness content",
+  xlim=c(0, .1), ylim=c(0, 140))
+
+
+
+```
